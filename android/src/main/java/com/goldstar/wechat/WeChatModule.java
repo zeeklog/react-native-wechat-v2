@@ -48,6 +48,7 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.modelpay.PayResp;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.modelbiz.WXOpenCustomerServiceChat;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -220,6 +221,35 @@ public class WeChatModule extends ReactContextBaseJavaModule implements IWXAPIEv
             return;
         }
         callback.invoke(null, api.openWXApp());
+    }
+
+    /**
+     * 打开微信客服会话
+     * 需要微信 SDK 6.7.9+，需在微信客服官网完成 appid 与企业 id 绑定
+     *
+     * @param corpId 企业 ID
+     * @param url    客服 URL，格式：https://work.weixin.qq.com/kfid/kfcxxxxx
+     * @param callback 回调
+     */
+    @ReactMethod
+    public void openCustomerServiceChat(String corpId, String url, Callback callback) {
+        if (api == null) {
+            callback.invoke(NOT_REGISTERED);
+            return;
+        }
+        if (corpId == null || corpId.isEmpty() || url == null || url.isEmpty()) {
+            callback.invoke(INVALID_ARGUMENT);
+            return;
+        }
+        try {
+            WXOpenCustomerServiceChat.Req req = new WXOpenCustomerServiceChat.Req();
+            req.corpId = corpId;
+            req.url = url;
+            boolean success = api.sendReq(req);
+            callback.invoke(success ? null : INVOKE_FAILED);
+        } catch (Exception e) {
+            callback.invoke(e.getMessage() != null ? e.getMessage() : INVOKE_FAILED);
+        }
     }
 
     @ReactMethod

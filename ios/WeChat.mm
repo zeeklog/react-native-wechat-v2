@@ -149,6 +149,27 @@ RCT_EXPORT_METHOD(openWXApp:(RCTResponseSenderBlock)callback)
     callback(@[([WXApi openWXApp] ? [NSNull null] : INVOKE_FAILED)]);
 }
 
+// 打开微信客服会话，需要 SDK 1.9.2+，需在微信客服官网完成 appid 与企业 id 绑定
+RCT_EXPORT_METHOD(openCustomerServiceChat:(NSString *)corpId
+                  url:(NSString *)url
+                  :(RCTResponseSenderBlock)callback)
+{
+    if (!corpId || corpId.length == 0 || !url || url.length == 0) {
+        callback(@[@"invalid argument."]);
+        return;
+    }
+    WXOpenCustomerServiceReq *req = [[WXOpenCustomerServiceReq alloc] init];
+    req.corpid = corpId;
+    req.url = url;
+    void ( ^ completion )( BOOL );
+    completion = ^( BOOL success )
+    {
+        callback(@[success ? [NSNull null] : INVOKE_FAILED]);
+        return;
+    };
+    [WXApi sendReq:req completion:completion];
+}
+
 RCT_EXPORT_METHOD(sendRequest:(NSString *)openid
                   :(RCTResponseSenderBlock)callback)
 {
