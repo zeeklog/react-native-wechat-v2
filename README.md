@@ -5,9 +5,7 @@
 [![platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-blue.svg)](https://reactnative.dev/)
 [![expo](https://img.shields.io/badge/Expo-Compatible-green.svg)](https://expo.dev/)
 
-> 专为 Expo React Native 项目设计的微信 SDK 封装库，集成分享、支付、登陆、跳转、发票等接口
-
-> Fix some bug for expo-react-native-wechat repo
+> 专为 Expo React Native 项目设计的微信 SDK 封装库，集成分享、支付、登陆、跳转、发票等接口， SDK使用微信官方：`WechatSDK.XCFramework`
 
 ## 📋 目录
 - [✨ 特性](#-特性)
